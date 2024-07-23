@@ -26,3 +26,7 @@ export const tokenRequire = (
 		return res.status(401).json({ message: "Unauthorized" });
 	}
 };
+
+export const getToken = (req: Request): string => {
+	return req.headers.authorization?.replace(/Bearer\s?/, "") || "";
+};
