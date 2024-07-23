@@ -27,4 +27,4 @@ const userSchema = new Schema<PostDto>(
 
 userSchema.index({ name: "text", email: "text" });
 
-export default model<PostDto>("Users", userSchema);
+export default model<PostDto>("Posts", userSchema);

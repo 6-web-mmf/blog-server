@@ -18,6 +18,7 @@ export class AuthController {
 				res
 					.status(status.HTTP_STATUS_BAD_REQUEST)
 					.json({ errors: errors.array() });
+				return;
 			}
 			const data = await this.authService.register(req.body);
 			res.status(status.HTTP_STATUS_CREATED).json(data);
@@ -39,6 +40,7 @@ export class AuthController {
 				res
 					.status(status.HTTP_STATUS_BAD_REQUEST)
 					.json({ errors: errors.array() });
+				return;
 			}
 			const data = await this.authService.authenticate(req.body);
 			res.status(status.HTTP_STATUS_CREATED).json(data);

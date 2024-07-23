@@ -19,8 +19,9 @@ export class PostController {
 				res
 					.status(status.HTTP_STATUS_BAD_REQUEST)
 					.json({ errors: errors.array() });
+				return;
 			}
-			const data = await this.postService.create(req.body);
+			const data = await this.postService.create(req.body, getToken(req));
 			res.status(status.HTTP_STATUS_CREATED).json(data);
 		} catch (err: any) {
 			res.status(status.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
@@ -55,8 +56,8 @@ export class PostController {
 
 	public delete = async (req: Request, res: Response): Promise<void> => {
 		try {
-			await this.postService.delete(req.params.id);
-			res.status(status.HTTP_STATUS_NO_CONTENT);
+			await this.postService.delete(req.params.id, getToken(req));
+			res.status(status.HTTP_STATUS_NO_CONTENT).json({message: "Post has been deleted"});
 		} catch (err: any) {
 			res.status(status.HTTP_STATUS_INTERNAL_SERVER_ERROR).json({
 				errors: [
@@ -75,6 +76,7 @@ export class PostController {
 				res
 					.status(status.HTTP_STATUS_BAD_REQUEST)
 					.json({ errors: errors.array() });
+				return;
 			}
 			const data = await this.postService.update(
 				req.params.id,

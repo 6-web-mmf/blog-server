@@ -12,6 +12,5 @@ export class PostValidation {
 	];
 	public createValidation: ValidationChain[] = [
 		...this.updateValidation,
-		body("author", "Author field is required").notEmpty(),
 	];
 }

@@ -4,7 +4,7 @@ import { PostValidation } from "../validation/post.validation";
 import { PostController } from "../controllers/post.controller";
 import { tokenRequire } from "../middleware/jwt.middleware";
 
-class AuthRoutes {
+class PostRoutes {
 	private readonly router: Router;
 	private readonly controller: PostController;
 	private readonly validator: PostValidation;
@@ -41,4 +41,4 @@ class AuthRoutes {
 	}
 }
 
-export default new AuthRoutes().getRouter;
+export default new PostRoutes().getRouter;

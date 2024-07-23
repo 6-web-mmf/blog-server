@@ -11,8 +11,11 @@ export class PostServiceImpl implements PostService {
 		this.userService = new UserServiceImpl();
 	}
 
-	public create = async (dto: PostDto): Promise<PostDto> => {
-		await postRepository.create(dto);
+	public create = async (dto: PostDto, token: string): Promise<PostDto> => {
+		await postRepository.create({
+			...dto,
+			author: await this.userService.getCurrentUser(token),
+		});
 		const post = await postRepository.findOne({
 			title: dto.title,
 		});
@@ -40,19 +43,27 @@ export class PostServiceImpl implements PostService {
 		token: string
 	): Promise<PostDto> => {
 		const post = await this.findById(id);
-		if ((await this.userService.findCurrentUser(token))._id === post.author) {
+		const creator = await this.userService.getCurrentUser(token);
+		if (creator._id?.toString() === post.author.toString()) {
 			await postRepository.updateOne(
 				{
 					_id: id,
 				},
 				dto
 			);
+		} else {
+			throw new Error("Only the creator of a post can update it");
 		}
 		return this.findById(id);
 	};
 
-	public delete = async (id: string): Promise<void> => {
+	public delete = async (id: string, token: string): Promise<void> => {
 		const post = await this.findById(id);
-		await postRepository.deleteOne(post);
+		const creator = await this.userService.getCurrentUser(token);
+		if (creator._id?.toString() === post.author.toString()) {
+			await postRepository.deleteOne(post);
+		} else {
+			throw new Error("Only the creator of a post can delete it");
+		}
 	};
 }
