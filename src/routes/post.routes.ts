@@ -31,7 +31,7 @@ class AuthRoutes {
 			"/posts/:id",
 			tokenRequire,
 			handleValidate,
-			this.validator.createValidation,
+			this.validator.updateValidation,
 			this.controller.update
 		);
 	};

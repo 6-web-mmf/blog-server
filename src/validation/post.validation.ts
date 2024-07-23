@@ -1,7 +1,7 @@
 import { ValidationChain, body } from "express-validator";
 
 export class PostValidation {
-	public createValidation: ValidationChain[] = [
+	public updateValidation: ValidationChain[] = [
 		body("title", "Title should contain more then 1 characters").isLength({
 			min: 1,
 		}),
@@ -9,5 +9,9 @@ export class PostValidation {
 			min: 5,
 		}),
 		body("img", "Image should be URL").isURL(),
+	];
+	public createValidation: ValidationChain[] = [
+		...this.updateValidation,
+		body("author", "Author field is required").notEmpty(),
 	];
 }
